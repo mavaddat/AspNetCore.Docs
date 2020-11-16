@@ -6,7 +6,7 @@ monikerRange: '>= aspnetcore-3.1'
 ms.author: riande
 ms.custom: mvc
 ms.date: 08/26/2020
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: blazor/debug
 ---
 # Debug ASP.NET Core Blazor WebAssembly
@@ -32,6 +32,7 @@ For now, you *can't*:
 
 * Break on unhandled exceptions.
 * Hit breakpoints during app startup before the debug proxy is running. This includes breakpoints in `Program.Main` (`Program.cs`) and breakpoints in the [`OnInitialized{Async}` methods](xref:blazor/components/lifecycle#component-initialization-methods) of components that are loaded by the first page requested from the app.
+* Debug in non-local scenarios (for example, [Windows Subsystem for Linux (WSL)](/windows/wsl/) or [Visual Studio Codespaces](/visualstudio/codespaces/overview/what-is-vsonline)).
 
 ## Prerequisites
 
@@ -39,6 +40,8 @@ Debugging requires either of the following browsers:
 
 * Google Chrome (version 70 or later) (default)
 * Microsoft Edge (version 80 or later)
+
+Ensure that firewalls or proxies don't block communication with the debug proxy (`NodeJS` process). For more information, see the [Firewall configuration](#firewall-configuration) section.
 
 Visual Studio for Mac requires version 8.8 (build 1532) or later:
 
@@ -322,6 +325,23 @@ Blazor provides a debugging proxy that implements the [Chrome DevTools Protocol]
 
 Browser source maps allow the browser to map compiled files back to their original source files and are commonly used for client-side debugging. However, Blazor doesn't currently map C# directly to JavaScript/WASM. Instead, Blazor does IL interpretation within the browser, so source maps aren't relevant.
 
+## Firewall configuration
+
+If a firewall blocks communication with the debug proxy, create a firewall exception rule that permits communication between the browser and the `NodeJS` process.
+
+> [!WARNING]
+> Modification of a firewall configuration must be made with care to avoid creating security vulnerablities. Carefully apply security guidance, follow best security practices, and respect warnings issued by the firewall's manufacturer.
+>
+> Permitting open communication with the `NodeJS` process:
+>
+> * Opens up the Node server to any connection, depending on the firewall's capabilities and configuration.
+> * Might be risky depending on your network.
+> * **Is only recommended on developer machines.**
+>
+> If possible, only allow open communication with the `NodeJS` process **on trusted or private networks**.
+
+For [Windows Firewall](/windows/security/threat-protection/windows-firewall/windows-firewall-with-advanced-security) configuration guidance, see [Create an Inbound Program or Service Rule](/windows/security/threat-protection/windows-firewall/create-an-inbound-program-or-service-rule). For more information, see [Windows Defender Firewall with Advanced Security](/windows/security/threat-protection/windows-firewall/windows-firewall-with-advanced-security) and related articles in the Windows Firewall documentation set.
+
 ## Troubleshoot
 
 If you're running into errors, the following tips may help:
@@ -332,6 +352,7 @@ If you're running into errors, the following tips may help:
 * If your environment uses an HTTP proxy, make sure that `localhost` is included in the proxy bypass settings. This can be done by setting the `NO_PROXY` environment variable in either:
   * The `launchSettings.json` file for the project.
   * At the user or system environment variables level for it to apply to all apps. When using an environment variable, restart Visual Studio for the change to take effect.
+* Ensure that firewalls or proxies don't block communication with the debug proxy (`NodeJS` process). For more information, see the [Firewall configuration](#firewall-configuration) section.
 
 ### Breakpoints in `OnInitialized{Async}` not hit
 

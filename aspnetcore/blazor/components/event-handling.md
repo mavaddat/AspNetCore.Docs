@@ -5,8 +5,8 @@ description: Learn about Blazor's event handling features, including event argum
 monikerRange: '>= aspnetcore-3.1'
 ms.author: riande
 ms.custom: mvc
-ms.date: 09/17/2020
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+ms.date: 10/20/2020
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: blazor/components/event-handling
 ---
 # ASP.NET Core Blazor event handling
@@ -55,7 +55,7 @@ In the following example, `UpdateHeading` is called asynchronously when the butt
 @code {
     private async Task UpdateHeading(MouseEventArgs e)
     {
-        ...
+        await ...
     }
 }
 ```
@@ -159,7 +159,7 @@ A common scenario with nested components is the desire to run a parent component
 
 The `ChildComponent` in the sample app (`Components/ChildComponent.razor`) demonstrates how a button's `onclick` handler is set up to receive an <xref:Microsoft.AspNetCore.Components.EventCallback> delegate from the sample's `ParentComponent`. The <xref:Microsoft.AspNetCore.Components.EventCallback> is typed with `MouseEventArgs`, which is appropriate for an `onclick` event from a peripheral device:
 
-[!code-razor[](../common/samples/3.x/BlazorWebAssemblySample/Components/ChildComponent.razor?highlight=5-7,17-18)]
+[!code-razor[](../common/samples/5.x/BlazorWebAssemblySample/Components/ChildComponent.razor?highlight=5-7,17-18)]
 
 The `ParentComponent` sets the child's <xref:Microsoft.AspNetCore.Components.EventCallback%601> (`OnClickCallback`) to its `ShowMessage` method.
 
@@ -273,3 +273,26 @@ In the following example, selecting the check box prevents click events from the
         Console.WriteLine($"A child div was selected. {DateTime.Now}");
 }
 ```
+
+::: moniker range=">= aspnetcore-5.0"
+
+## Focus an element
+
+Call `FocusAsync` on an [element reference](xref:blazor/call-javascript-from-dotnet#capture-references-to-elements) to focus an element in code:
+
+```razor
+<input @ref="exampleInput" />
+
+<button @onclick="ChangeFocus">Focus the Input Element</button>
+
+@code {
+    private ElementReference exampleInput;
+	
+    private async Task ChangeFocus()
+    {
+        await exampleInput.FocusAsync();
+    }
+}
+```
+
+::: moniker-end

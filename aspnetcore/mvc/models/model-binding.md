@@ -5,7 +5,7 @@ description: Learn how model binding in ASP.NET Core works and how to customize 
 ms.assetid: 0be164aa-1d72-4192-bd6b-192c9c301164
 ms.author: riande
 ms.date: 12/18/2019
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: mvc/models/model-binding
 ---
 
@@ -285,6 +285,27 @@ public IActionResult OnPost([Bind("LastName,FirstMidName,HireDate")] Instructor 
 ```
 
 The `[Bind]` attribute can be used to protect against overposting in *create* scenarios. It doesn't work well in edit scenarios because excluded properties are set to null or a default value instead of being left unchanged. For defense against overposting, view models are recommended rather than the `[Bind]` attribute. For more information, see [Security note about overposting](xref:data/ef-mvc/crud#security-note-about-overposting).
+
+### [ModelBinder] attribute
+
+<xref:Microsoft.AspNetCore.Mvc.ModelBinderAttribute> can be applied to types, properties, or parameters. It allows specifying the type of model binder used to bind the specific instance or type. For example:
+
+```C#
+[HttpPost]
+public IActionResult OnPost([ModelBinder(typeof(MyInstructorModelBinder))] Instructor instructor)
+```
+
+The `[ModelBinder]` attribute can also be used to change the name of a property or parameter when it's being model bound:
+
+```C#
+public class Instructor
+{
+    [ModelBinder(Name = "instructor_id")]
+    public string Id { get; set; }
+    
+    public string Name { get; set; }
+}
+```
 
 ### [BindRequired] attribute
 

@@ -5,7 +5,7 @@ description: Shows how to create a Razor Pages app using Entity Framework Core
 ms.author: riande
 ms.custom: "mvc, seodec18"
 ms.date: 9/26/2020
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: data/ef-rp/intro
 ---
 
@@ -103,11 +103,16 @@ To run the app after downloading the completed project:
 
 # [Visual Studio](#tab/visual-studio)
 
-* From the Visual Studio **File** menu, select **New** > **Project**.
-* Select **ASP.NET Core Web Application**.
-* Name the project *ContosoUniversity*. It's important to use this exact name including capitalization, so the namespaces match when code is copied and pasted.
-* Select **.NET Core** and **ASP.NET Core 5.0** in the dropdowns, and then select **Web Application**.
-
+1. Start Visual Studio and select **Create a new project**.
+1. In the **Create a new project** dialog, select **ASP.NET Core Web Application** > **Next**.
+1. In the **Configure your new project** dialog, enter `ContosoUniversity` for **Project name**. It's important to use this exact name including capitalization, so each `namespace` matches when code is copied.
+1. Select **Create**.
+1. In the **Create a new ASP.NET Core web application** dialog, select:
+    1. **.NET Core** and **ASP.NET Core 5.0** in the dropdowns.
+    1. **ASP.NET Core Web App (Model-View-Controller)**.
+    1. **Create**
+      ![New ASP.NET Core Project dialog](~/data/ef-mvc/intro/_static/new-aspnet5.png)
+    
 # [Visual Studio Code](#tab/visual-studio-code)
 
 * In a terminal, navigate to the folder in which the project folder should be created.
@@ -352,7 +357,7 @@ The name of the connection string is passed in to the context by calling a metho
 
 ### Add the database exception filter
 
-Add `AddDatabaseDeveloperPageExceptionFilter` to `ConfigureServices` as shown in the following code:
+Add <xref:Microsoft.Extensions.DependencyInjection.DatabaseDeveloperPageExceptionFilterServiceExtensions.AddDatabaseDeveloperPageExceptionFilter%2A> to `ConfigureServices` as shown in the following code:
 
 # [Visual Studio](#tab/visual-studio)
 
@@ -360,10 +365,10 @@ Add `AddDatabaseDeveloperPageExceptionFilter` to `ConfigureServices` as shown in
 
 Add the [Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore](https://www.nuget.org/packages/Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore) NuGet package.
 
-In the PMC, enter the following command to add the NuGet package:
+In the PMC, enter the following to add the NuGet package:
 
 ```powershell
-Install-Package Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore -Version 5.0.0-rc.1.20451.17
+Install-Package Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore -Version 5.0.0-rc.2.20475.17
 ```
 
 # [Visual Studio Code](#tab/visual-studio-code)
@@ -373,6 +378,8 @@ Install-Package Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore -Version 5.
 ---
 
 The `Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore` NuGet package provides ASP.NET Core middleware for Entity Framework Core error pages. This middleware helps to detect and diagnose errors with Entity Framework Core migrations.
+
+The `AddDatabaseDeveloperPageExceptionFilter` provides helpful error information in the [development environment](xref:fundamentals/environments).
 
 ## Create the database
 

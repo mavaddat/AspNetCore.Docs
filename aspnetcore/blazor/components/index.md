@@ -5,8 +5,8 @@ description: Learn how to create and use Razor components, including how to bind
 monikerRange: '>= aspnetcore-3.1'
 ms.author: riande
 ms.custom: mvc
-ms.date: 08/19/2020
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+ms.date: 11/09/2020
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: blazor/components/index
 ---
 # Create and use ASP.NET Core Razor components
@@ -227,11 +227,25 @@ If a component contains an HTML element with an uppercase first letter that does
 
 Components can receive route parameters from the route template provided in the [`@page`][9] directive. The router uses route parameters to populate the corresponding component parameters.
 
+::: moniker range=">= aspnetcore-5.0"
+
+Optional parameters are supported. In the following example, the `text` optional parameter assigns the value of the route segment to the component's `Text` property. If the segment isn't present, the value of `Text` is set to `fantastic`.
+
 `Pages/RouteParameter.razor`:
 
-[!code-razor[](index/samples_snapshot/RouteParameter.razor?highlight=2,7-8)]
+[!code-razor[](index/samples_snapshot/RouteParameter-5x.razor?highlight=1,6-7)]
+
+::: moniker-end
+
+::: moniker range="< aspnetcore-5.0"
+
+`Pages/RouteParameter.razor`:
+
+[!code-razor[](index/samples_snapshot/RouteParameter-3x.razor?highlight=2,7-8)]
 
 Optional parameters aren't supported, so two [`@page`][9] directives are applied in the preceding example. The first permits navigation to the component without a parameter. The second [`@page`][9] directive receives the `{text}` route parameter and assigns the value to the `Text` property.
+
+::: moniker-end
 
 For information on catch-all route parameters (`{*pageRoute}`), which capture paths across multiple folder boundaries, see <xref:blazor/fundamentals/routing#catch-all-route-parameters>.
 
@@ -241,13 +255,21 @@ Components can have *component parameters*, which are defined using public prope
 
 `Components/ChildComponent.razor`:
 
-[!code-razor[](../common/samples/3.x/BlazorWebAssemblySample/Components/ChildComponent.razor?highlight=2,11-12)]
+[!code-razor[](../common/samples/5.x/BlazorWebAssemblySample/Components/ChildComponent.razor?highlight=2,11-12)]
 
 In the following example from the sample app, the `ParentComponent` sets the value of the `Title` property of the `ChildComponent`.
 
 `Pages/ParentComponent.razor`:
 
 [!code-razor[](index/samples_snapshot/ParentComponent.razor?highlight=5-6)]
+
+By convention, an attribute value that consists of C# code is assigned to a parameter using [Razor's reserved `@` symbol](xref:mvc/views/razor#razor-syntax):
+
+* Parent field or property: `Title="@{FIELD OR PROPERTY}`, where the placeholder `{FIELD OR PROPERTY}` is a C# field or property of the parent component.
+* Result of a method: `Title="@{METHOD}"`, where the placeholder `{METHOD}` is a C# method of the parent component.
+* [Implicit or explicit expression](xref:mvc/views/razor#implicit-razor-expressions): `Title="@({EXPRESSION})"`, where the placeholder `{EXPRESSION}` is a C# expression.
+  
+For more information, see <xref:mvc/views/razor>.
 
 > [!WARNING]
 > Don't create components that write to their own *component parameters*, use a private field instead. For more information, see the [Overwritten parameters](#overwritten-parameters) section.
@@ -260,7 +282,7 @@ In the following example, the `ChildComponent` has a `ChildContent` property tha
 
 `Components/ChildComponent.razor`:
 
-[!code-razor[](../common/samples/3.x/BlazorWebAssemblySample/Components/ChildComponent.razor?highlight=3,14-15)]
+[!code-razor[](../common/samples/5.x/BlazorWebAssemblySample/Components/ChildComponent.razor?highlight=3,14-15)]
 
 > [!NOTE]
 > The property receiving the <xref:Microsoft.AspNetCore.Components.RenderFragment> content must be named `ChildContent` by convention.
@@ -277,7 +299,7 @@ Due to the way that Blazor renders child content, rendering components inside a 
 > @for (int c = 0; c < 10; c++)
 > {
 >     var current = c;
->     <ChildComponent Param1="@c">
+>     <ChildComponent Title="@c">
 >         Child Content: Count: @current
 >     </ChildComponent>
 > }
@@ -288,7 +310,7 @@ Due to the way that Blazor renders child content, rendering components inside a 
 > ```razor
 > @foreach(var c in Enumerable.Range(0,10))
 > {
->     <ChildComponent Param1="@c">
+>     <ChildComponent Title="@c">
 >         Child Content: Count: @c
 >     </ChildComponent>
 > }
@@ -611,15 +633,29 @@ Ensure that values used for [`@key`][5] don't clash. If clashing values are dete
 
 ## Overwritten parameters
 
-New parameter values are supplied, typically overwriting existing ones, when the parent component rerenders.
+The Blazor framework generally imposes safe parent-to-child parameter assignment:
 
-Consider the following `Expander` component that:
+* Parameters aren't overwritten unexpectedly.
+* Side-effects are minimized. For example, additional renders are avoided because they may create infinite rendering loops.
+
+A child component receives new parameter values that possibly overwrite existing values when the parent component rerenders. Accidentially overwriting parameter values in a child component often occurs when developing the component with one or more data-bound parameters and the developer writes directly to a parameter in the child:
+
+* The child component is rendered with one or more parameter values from the parent component.
+* The child writes directly to the value of a parameter.
+* The parent component rerenders and overwrites the value of the child's parameter.
+
+The potential for overwriting paramater values extends into the child component's property setters, too.
+
+**Our general guidance is not to create components that directly write to their own parameters.**
+
+Consider the following faulty `Expander` component that:
 
 * Renders child content.
-* Toggles showing child content with a component parameter.
+* Toggles showing child content with a component parameter (`Expanded`).
+* The component writes directly to the `Expanded` parameter, which demonstrates the problem with overwritten parameters and should be avoided.
 
 ```razor
-<div @onclick="@Toggle" class="card bg-light mb-3" style="width:30rem">
+<div @onclick="Toggle" class="card bg-light mb-3" style="width:30rem">
     <div class="card-body">
         <h2 class="card-title">Toggle (<code>Expanded</code> = @Expanded)</h2>
 
@@ -668,10 +704,10 @@ The following revised `Expander` component:
 
 * Accepts the `Expanded` component parameter value from the parent.
 * Assigns the component parameter value to a *private field* (`expanded`) in the [OnInitialized event](xref:blazor/components/lifecycle#component-initialization-methods).
-* Uses the private field to maintain its internal toggle state.
+* Uses the private field to maintain its internal toggle state, which demonstrates how to avoid writing directly to a parameter.
 
 ```razor
-<div @onclick="@Toggle" class="card bg-light mb-3" style="width:30rem">
+<div @onclick="Toggle" class="card bg-light mb-3" style="width:30rem">
     <div class="card-body">
         <h2 class="card-title">Toggle (<code>expanded</code> = @expanded)</h2>
 
@@ -702,6 +738,8 @@ The following revised `Expander` component:
     }
 }
 ```
+
+For additional information, see [Blazor Two Way Binding Error (dotnet/aspnetcore #24599)](https://github.com/dotnet/aspnetcore/issues/24599). 
 
 ## Apply an attribute
 

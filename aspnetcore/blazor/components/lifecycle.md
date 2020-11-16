@@ -5,8 +5,8 @@ description: Learn how to use Razor component lifecycle methods in ASP.NET Core 
 monikerRange: '>= aspnetcore-3.1'
 ms.author: riande
 ms.custom: mvc
-ms.date: 10/06/2020
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+ms.date: 11/06/2020
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: blazor/components/lifecycle
 ---
 # ASP.NET Core Blazor lifecycle
@@ -23,16 +23,16 @@ Component lifecycle events:
    * Create the component's instance.
    * Perform property injection. Run [`SetParametersAsync`](#before-parameters-are-set).
    * Call [`OnInitialized{Async}`](#component-initialization-methods). If a <xref:System.Threading.Tasks.Task> is returned, the <xref:System.Threading.Tasks.Task> is awaited and then the component is rendered. If a <xref:System.Threading.Tasks.Task> isn't returned, render the component.
-1. Call [`OnParametersSet{Async}`](#after-parameters-are-set). If a <xref:System.Threading.Tasks.Task> is returned, the <xref:System.Threading.Tasks.Task> is awaited and then the component is rendered. If a <xref:System.Threading.Tasks.Task> isn't returned, render the component.
+1. Call [`OnParametersSet{Async}`](#after-parameters-are-set) and render the component. If a <xref:System.Threading.Tasks.Task> is returned from `OnParametersSetAsync`, the <xref:System.Threading.Tasks.Task> is awaited and then the component is rerendered.
 
-<img src="lifecycle/_static/lifecycle1.png" alt="Component lifecycle events of a Razor component in Blazor" data-linktype="relative-path" style="max-width:350px;display:block;margin:0 auto">
+![Component lifecycle events of a Razor component in Blazor](lifecycle/_static/lifecycle1.png)
 
 Document Object Model (DOM) event processing:
 
 1. The event handler is run.
 1. If a <xref:System.Threading.Tasks.Task> is returned, the <xref:System.Threading.Tasks.Task> is awaited and then the component is rendered. If a <xref:System.Threading.Tasks.Task> isn't returned, the component is rendered.
 
-<img src="lifecycle/_static/lifecycle2.png" alt="Document Object Model (DOM) event processing" data-linktype="relative-path" style="max-width:350px;display:block;margin:0 auto">
+![Document Object Model (DOM) event processing](lifecycle/_static/lifecycle2.png)
 
 The `Render` lifecycle:
 
@@ -41,7 +41,7 @@ The `Render` lifecycle:
 1. Await the DOM to update.
 1. Call [`OnAfterRender{Async}`](#after-component-render).
 
-<img src="lifecycle/_static/lifecycle3.png" alt="Render lifecycle" data-linktype="relative-path" style="max-width:350px;display:block;margin:0 auto">
+![Render lifecycle](lifecycle/_static/lifecycle3.png)
 
 Developer calls to [`StateHasChanged`](#state-changes) result in a render.
 
@@ -64,7 +64,7 @@ public override async Task SetParametersAsync(ParameterView parameters)
 
 The default implementation of <xref:Microsoft.AspNetCore.Components.ComponentBase.SetParametersAsync%2A> sets the value of each property with the [`[Parameter]`](xref:Microsoft.AspNetCore.Components.ParameterAttribute) or [`[CascadingParameter]`](xref:Microsoft.AspNetCore.Components.CascadingParameterAttribute) attribute that has a corresponding value in the <xref:Microsoft.AspNetCore.Components.ParameterView>. Parameters that don't have a corresponding value in <xref:Microsoft.AspNetCore.Components.ParameterView> are left unchanged.
 
-If [`base.SetParametersAync`](xref:Microsoft.AspNetCore.Components.ComponentBase.SetParametersAsync%2A) isn't invoked, the custom code can interpret the incoming parameters value in any way required. For example, there's no requirement to assign the incoming parameters to the properties on the class.
+If [`base.SetParametersAsync`](xref:Microsoft.AspNetCore.Components.ComponentBase.SetParametersAsync%2A) isn't invoked, the custom code can interpret the incoming parameters value in any way required. For example, there's no requirement to assign the incoming parameters to the properties on the class.
 
 If any event handlers are set up, unhook them on disposal. For more information, see the [Component disposal with `IDisposable`](#component-disposal-with-idisposable) section.
 
@@ -92,7 +92,7 @@ protected override async Task OnInitializedAsync()
 }
 ```
 
-Blazor Server apps that [prerender their content](xref:blazor/fundamentals/additional-scenarios#render-mode) call <xref:Microsoft.AspNetCore.Components.ComponentBase.OnInitializedAsync%2A> **_twice_**:
+Blazor Server apps that [prerender their content](xref:blazor/fundamentals/additional-scenarios#render-mode) call <xref:Microsoft.AspNetCore.Components.ComponentBase.OnInitializedAsync%2A> *twice*:
 
 * Once when the component is initially rendered statically as part of the page.
 * A second time when the browser establishes a connection back to the server.
@@ -189,7 +189,7 @@ protected override bool ShouldRender()
 
 Even if <xref:Microsoft.AspNetCore.Components.ComponentBase.ShouldRender%2A> is overridden, the component is always initially rendered.
 
-For more information, see <xref:blazor/webassembly-performance-best-practices#avoid-unnecessary-component-renders>.
+For more information, see <xref:blazor/webassembly-performance-best-practices#avoid-unnecessary-rendering-of-component-subtrees>.
 
 ## State changes
 
@@ -201,7 +201,7 @@ For more information, see <xref:blazor/webassembly-performance-best-practices#av
 
 Asynchronous actions performed in lifecycle events might not have completed before the component is rendered. Objects might be `null` or incompletely populated with data while the lifecycle method is executing. Provide rendering logic to confirm that objects are initialized. Render placeholder UI elements (for example, a loading message) while objects are `null`.
 
-In the `FetchData` component of the Blazor templates, <xref:Microsoft.AspNetCore.Components.ComponentBase.OnInitializedAsync%2A> is overridden to asychronously receive forecast data (`forecasts`). When `forecasts` is `null`, a loading message is displayed to the user. After the `Task` returned by <xref:Microsoft.AspNetCore.Components.ComponentBase.OnInitializedAsync%2A> completes, the component is rerendered with the updated state.
+In the `FetchData` component of the Blazor templates, <xref:Microsoft.AspNetCore.Components.ComponentBase.OnInitializedAsync%2A> is overridden to asynchronously receive forecast data (`forecasts`). When `forecasts` is `null`, a loading message is displayed to the user. After the `Task` returned by <xref:Microsoft.AspNetCore.Components.ComponentBase.OnInitializedAsync%2A> completes, the component is rerendered with the updated state.
 
 `Pages/FetchData.razor` in the Blazor Server template:
 
@@ -375,3 +375,7 @@ In the following example:
     }
 }
 ```
+
+## Blazor Server reconnection events
+
+The component lifecycle events covered in this article operate separately from [Blazor Server's reconnection event handlers](xref:blazor/fundamentals/additional-scenarios#reflect-the-connection-state-in-the-ui). When a Blazor Server app loses its SignalR connection to the client, only UI updates are interrupted. UI updates are resumed when the connection is re-established. For more information on circuit handler events and configuration, see <xref:blazor/fundamentals/additional-scenarios>.

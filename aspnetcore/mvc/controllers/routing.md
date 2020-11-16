@@ -4,7 +4,7 @@ author: rick-anderson
 description: Learn how ASP.NET Core MVC uses Routing Middleware to match URLs of incoming requests and map them to actions.
 ms.author: riande
 ms.date: 3/25/2020
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: mvc/controllers/routing
 ---
 # Routing to controller actions in ASP.NET Core
@@ -840,7 +840,7 @@ Public methods on a controller, except those with the [NonAction](xref:Microsoft
 
 ## Sample code
 
- * The [MyDisplayRouteInfo](https://github.com/dotnet/AspNetCore.Docs/tree/master/aspnetcore/mvc/controllers/routing/samples/3.x/main/Extensions/ControllerContextExtensions.cs) method is included in the [sample download](https://github.com/dotnet/AspNetCore.Docs/tree/master/aspnetcore/mvc/controllers/routing/samples/3.x) and is used to display routing information.
+* [!INCLUDE[](~/includes/MyDisplayRouteInfo.md)]
 * [View or download sample code](https://github.com/dotnet/AspNetCore.Docs/tree/master/aspnetcore/mvc/controllers/routing/samples/3.x) ([how to download](xref:index#how-to-download-a-sample))
 
 [!INCLUDE[](~/includes/dbg-route.md)]

@@ -5,7 +5,7 @@ description: Learn how to use the logging framework provided by the Microsoft.Ex
 ms.author: riande
 ms.custom: mvc
 ms.date: 6/29/2020
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: fundamentals/logging/index
 ---
 
@@ -67,7 +67,7 @@ The following example:
 
 [Levels](#log-level) and [categories](#log-category) are explained in more detail later in this document.
 
-For information on Blazor, see [Create logs in Blazor and Blazor WebAssembly](#clib) in this document.
+For information on Blazor, see <xref:blazor/fundamentals/logging>.
 
 [Create logs in Main and Startup](#clms) shows how to create logs in `Main` and `Startup`.
 

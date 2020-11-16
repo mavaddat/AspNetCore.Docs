@@ -4,9 +4,9 @@ author: guardrex
 description: Learn how to invoke .NET methods from JavaScript functions in Blazor apps.
 monikerRange: '>= aspnetcore-3.1'
 ms.author: riande
-ms.custom: mvc
+ms.custom: mvc, devx-track-js 
 ms.date: 08/12/2020
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: blazor/call-dotnet-from-javascript
 ---
 # Call .NET methods from JavaScript functions in ASP.NET Core Blazor
@@ -46,7 +46,7 @@ JavaScript served to the client invokes the C# .NET method.
 
 `wwwroot/exampleJsInterop.js`:
 
-[!code-javascript[](./common/samples/3.x/BlazorWebAssemblySample/wwwroot/exampleJsInterop.js?highlight=8-14)]
+[!code-javascript[](./common/samples/5.x/BlazorWebAssemblySample/wwwroot/exampleJsInterop.js?highlight=8-14)]
 
 When the **`Trigger .NET static method ReturnArrayAsync`** button is selected, examine the console output in the browser's web developer tools.
 
@@ -108,7 +108,7 @@ When the **`Trigger .NET instance method HelloHelper.SayHello`** button is selec
 @code {
     public async Task TriggerNetInstanceMethod()
     {
-        var exampleJsInterop = new ExampleJsInterop(JSRuntime);
+        var exampleJsInterop = new ExampleJsInterop(JS);
         await exampleJsInterop.CallHelloHelperSayHello("Blazor");
     }
 }
@@ -118,17 +118,17 @@ When the **`Trigger .NET instance method HelloHelper.SayHello`** button is selec
 
 `JsInteropClasses/ExampleJsInterop.cs`:
 
-[!code-csharp[](./common/samples/3.x/BlazorWebAssemblySample/JsInteropClasses/ExampleJsInterop.cs?name=snippet1&highlight=11-18)]
+[!code-csharp[](./common/samples/5.x/BlazorWebAssemblySample/JsInteropClasses/ExampleJsInterop.cs?name=snippet1&highlight=11-18)]
 
 `wwwroot/exampleJsInterop.js`:
 
-[!code-javascript[](./common/samples/3.x/BlazorWebAssemblySample/wwwroot/exampleJsInterop.js?highlight=15-18)]
+[!code-javascript[](./common/samples/5.x/BlazorWebAssemblySample/wwwroot/exampleJsInterop.js?highlight=15-18)]
 
 The name is passed to `HelloHelper`'s constructor, which sets the `HelloHelper.Name` property. When the JavaScript function `sayHello` is executed, `HelloHelper.SayHello` returns the `Hello, {Name}!` message, which is written to the console by the JavaScript function.
 
 `JsInteropClasses/HelloHelper.cs`:
 
-[!code-csharp[](./common/samples/3.x/BlazorWebAssemblySample/JsInteropClasses/HelloHelper.cs?name=snippet1&highlight=5,10-11)]
+[!code-csharp[](./common/samples/5.x/BlazorWebAssemblySample/JsInteropClasses/HelloHelper.cs?name=snippet1&highlight=5,10-11)]
 
 Console output in the browser's web developer tools:
 
@@ -143,19 +143,19 @@ To avoid a memory leak and allow garbage collection on a component that creates 
   ```csharp
   public class ExampleJsInterop : IDisposable
   {
-      private readonly IJSRuntime jsRuntime;
+      private readonly IJSRuntime js;
       private DotNetObjectReference<HelloHelper> objRef;
 
-      public ExampleJsInterop(IJSRuntime jsRuntime)
+      public ExampleJsInterop(IJSRuntime js)
       {
-          this.jsRuntime = jsRuntime;
+          this.js = js;
       }
 
       public ValueTask<string> CallHelloHelperSayHello(string name)
       {
           objRef = DotNetObjectReference.Create(new HelloHelper(name));
 
-          return jsRuntime.InvokeAsync<string>(
+          return js.InvokeAsync<string>(
               "exampleJsFunctions.sayHello",
               objRef);
       }
@@ -173,7 +173,7 @@ To avoid a memory leak and allow garbage collection on a component that creates 
   @page "/JSInteropComponent"
   @using {APP ASSEMBLY}.JsInteropClasses
   @implements IDisposable
-  @inject IJSRuntime JSRuntime
+  @inject IJSRuntime JS
 
   <h1>JavaScript Interop</h1>
 
@@ -188,7 +188,7 @@ To avoid a memory leak and allow garbage collection on a component that creates 
       {
           objRef = DotNetObjectReference.Create(new HelloHelper("Blazor"));
 
-          await JSRuntime.InvokeAsync<string>(
+          await JS.InvokeAsync<string>(
               "exampleJsFunctions.sayHello",
               objRef);
       }
@@ -379,7 +379,7 @@ The placeholder `{APP ASSEMBLY}` is the app's app assembly name (for example, `B
 `Shared/ListItem.razor`:
 
 ```razor
-@inject IJSRuntime JsRuntime
+@inject IJSRuntime JS
 
 <li>
     @message
@@ -398,7 +398,7 @@ The placeholder `{APP ASSEMBLY}` is the app's app assembly name (for example, `B
 
     protected async Task InteropCall()
     {
-        await JsRuntime.InvokeVoidAsync("updateMessageCallerJS",
+        await JS.InvokeVoidAsync("updateMessageCallerJS",
             DotNetObjectReference.Create(messageUpdateInvokeHelper));
     }
 
@@ -440,8 +440,11 @@ For more information, see the following issues:
 * [Circular references are not supported, take two (dotnet/aspnetcore #20525)](https://github.com/dotnet/aspnetcore/issues/20525)
 * [Proposal: Add mechanism to handle circular references when serializing (dotnet/runtime #30820)](https://github.com/dotnet/runtime/issues/30820)
 
+## JS modules
+
+For JS isolation, JS interop works with the browser's default support for [EcmaScript modules (ESM)](https://developer.mozilla.org/docs/Web/JavaScript/Guide/Modules) ([ECMAScript specification](https://tc39.es/ecma262/#sec-modules)).
+
 ## Additional resources
 
 * <xref:blazor/call-javascript-from-dotnet>
 * [`InteropComponent.razor` example (dotnet/AspNetCore GitHub repository, 3.1 release branch)](https://github.com/dotnet/AspNetCore/blob/release/3.1/src/Components/test/testassets/BasicTestApp/InteropComponent.razor)
-* [Perform large data transfers in Blazor Server apps](xref:blazor/advanced-scenarios#perform-large-data-transfers-in-blazor-server-apps)

@@ -6,7 +6,7 @@ monikerRange: '>= aspnetcore-3.1'
 ms.author: riande
 ms.custom: mvc
 ms.date: 07/29/2020
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: blazor/fundamentals/configuration
 ---
 # ASP.NET Core Blazor configuration
@@ -150,14 +150,14 @@ using Microsoft.Extensions.Configuration;
 
 ...
 
-var client = new HttpClient()
+var http = new HttpClient()
 {
     BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
 };
 
-builder.Services.AddScoped(sp => client);
+builder.Services.AddScoped(sp => http);
 
-using var response = await client.GetAsync("cars.json");
+using var response = await http.GetAsync("cars.json");
 using var stream = await response.Content.ReadAsStreamAsync();
 
 builder.Configuration.AddJsonStream(stream);

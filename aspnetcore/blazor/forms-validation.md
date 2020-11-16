@@ -6,7 +6,7 @@ monikerRange: '>= aspnetcore-3.1'
 ms.author: riande
 ms.custom: mvc
 ms.date: 09/17/2020
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: blazor/forms-validation
 ---
 # ASP.NET Core Blazor forms and validation
@@ -54,7 +54,7 @@ In the preceding example:
 
 * The form validates user input in the `name` field using the validation defined in the `ExampleModel` type. The model is created in the component's `@code` block and held in a private field (`exampleModel`). The field is assigned to the `Model` attribute of the `<EditForm>` element.
 * The <xref:Microsoft.AspNetCore.Components.Forms.InputText> component's `@bind-Value` binds:
-  * The model property (`exampleModel.Name`) to the <xref:Microsoft.AspNetCore.Components.Forms.InputText> component's `Value` property. For more information on property binding, see <xref:blazor/components/data-binding#parent-to-child-binding-with-component-parameters>.
+  * The model property (`exampleModel.Name`) to the <xref:Microsoft.AspNetCore.Components.Forms.InputText> component's `Value` property. For more information on property binding, see <xref:blazor/components/data-binding#binding-with-component-parameters>.
   * A change event delegate to the <xref:Microsoft.AspNetCore.Components.Forms.InputText> component's `ValueChanged` property.
 * The <xref:Microsoft.AspNetCore.Components.Forms.DataAnnotationsValidator> [validator component](#validator-components) attaches validation support using data annotations.
 * The <xref:Microsoft.AspNetCore.Components.Forms.ValidationSummary> component summarizes validation messages.
@@ -503,7 +503,7 @@ namespace BlazorSample.Server.Controllers
             }
             catch (Exception ex)
             {
-                logger.LogError("Validation Error: {MESSAGE}", ex.Message);
+                logger.LogError("Validation Error: {Message}", ex.Message);
             }
 
             return BadRequest(ModelState);
@@ -690,7 +690,7 @@ In the client project, the *Starfleet Starship Database* form is updated to show
         }
         catch (Exception ex)
         {
-            Logger.LogError("Form processing error: {MESSAGE}", ex.Message);
+            Logger.LogError("Form processing error: {Message}", ex.Message);
             disabled = true;
             messageStyles = "color:red";
             message = "There was an error processing the form.";
@@ -789,7 +789,7 @@ public Engine? Engine { get; set; } = null;
 Add the following `enums` to the app. Create a new file to hold the `enums` or add the `enums` to the `Starship.cs` file. Make the `enums` accessible to the `Starship` model and the *Starfleet Starship Database* form:
 
 ```csharp
-public enum Manufacturer { SpaceX, NASA, ULA, Virgin, Unknown }
+public enum Manufacturer { SpaceX, NASA, ULA, VirginGalactic, Unknown }
 public enum Color { ImperialRed, SpacecruiserGreen, StarshipBlue, VoyagerOrange }
 public enum Engine { Ion, Plasma, Fusion, Warp }
 ```

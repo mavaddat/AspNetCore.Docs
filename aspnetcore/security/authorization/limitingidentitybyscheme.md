@@ -5,7 +5,7 @@ description: This article explains how to limit identity to a specific scheme wh
 monikerRange: '>= aspnetcore-2.1'
 ms.author: riande
 ms.date: 11/08/2019
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: security/authorization/limitingidentitybyscheme
 ---
 # Authorize with a specific scheme in ASP.NET Core
@@ -135,3 +135,5 @@ public void ConfigureServices(IServiceCollection services)
 As the default authorization policy is overridden, it's possible to use the `[Authorize]` attribute in controllers. The controller then accepts requests with JWT issued by the first or second issuer.
 
 ::: moniker-end
+
+See [this GitHub issue](https://github.com/dotnet/aspnetcore/issues/26002) on using multiple authentication schemes.

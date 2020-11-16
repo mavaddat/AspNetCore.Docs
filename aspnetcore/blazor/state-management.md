@@ -5,8 +5,8 @@ description: Learn how to persist state in Blazor Server apps.
 monikerRange: '>= aspnetcore-3.1'
 ms.author: riande
 ms.custom: mvc
-ms.date: 07/22/2020
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+ms.date: 10/29/2020
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: blazor/state-management
 zone_pivot_groups: blazor-hosting-models
 ---
@@ -44,12 +44,12 @@ An app can only persist *app state*. UIs can't be persisted, such as component i
 
 Common locations exist for persisting state:
 
-* [Server-side storage](#server-side-storage)
-* [URL](#url)
-* [Browser storage](#browser-storage)
-* [In-memory state container service](#in-memory-state-container-service)
+* [Server-side storage](#server-side-storage-wasm)
+* [URL](#url-wasm)
+* [Browser storage](#browser-storage-wasm)
+* [In-memory state container service](#in-memory-state-container-service-wasm)
 
-### Server-side storage
+<h2 id="server-side-storage-wasm">Server-side storage</h2>
 
 For permanent data persistence that spans multiple users and devices, the app can use independent server-side storage accessed via a web API. Options include:
 
@@ -73,7 +73,7 @@ For more information on Azure data storage options, see the following:
 * [Azure Databases](https://azure.microsoft.com/product-categories/databases/)
 * [Azure Storage Documentation](/azure/storage/)
 
-### URL
+<h2 id="url-wasm">URL</h2>
 
 For transient data representing navigation state, model the data as a part of the URL. Examples of user state modeled in the URL include:
 
@@ -84,7 +84,7 @@ The contents of the browser's address bar are retained if the user manually relo
 
 For information on defining URL patterns with the [`@page`](xref:mvc/views/razor#page) directive, see <xref:blazor/fundamentals/routing>.
 
-### Browser storage
+<h2 id="browser-storage-wasm">Browser storage</h2>
 
 For transient data that the user is actively creating, a commonly used storage location is the browser's [`localStorage`](https://developer.mozilla.org/docs/Web/API/Window/localStorage) and [`sessionStorage`](https://developer.mozilla.org/docs/Web/API/Window/sessionStorage) collections:
 
@@ -104,7 +104,7 @@ Generally, `sessionStorage` is safer to use. `sessionStorage` avoids the risk th
 > [!WARNING]
 > Users may view or tamper with the data stored in `localStorage` and `sessionStorage`.
 
-## In-memory state container service
+<h2 id="in-memory-state-container-service-wasm">In-memory state container service</h2>
 
 [!INCLUDE[](~/includes/blazor-state-management/state-container.md)]
 
@@ -153,12 +153,12 @@ An app can only persist *app state*. UIs can't be persisted, such as component i
 
 Common locations exist for persisting state:
 
-* [Server-side storage](#server-side-storage)
-* [URL](#url)
-* [Browser storage](#browser-storage)
-* [In-memory state container service](#in-memory-state-container-service)
+* [Server-side storage](#server-side-storage-server)
+* [URL](#url-server)
+* [Browser storage](#browser-storage-server)
+* [In-memory state container service](#in-memory-state-container-service-server)
 
-### Server-side storage
+<h2 id="server-side-storage-server">Server-side storage</h2>
 
 For permanent data persistence that spans multiple users and devices, the app can use server-side storage. Options include:
 
@@ -174,7 +174,7 @@ For more information on Azure data storage options, see the following:
 * [Azure Databases](https://azure.microsoft.com/product-categories/databases/)
 * [Azure Storage Documentation](/azure/storage/)
 
-### URL
+<h2 id="url-server">URL</h2>
 
 For transient data representing navigation state, model the data as a part of the URL. Examples of user state modeled in the URL include:
 
@@ -188,7 +188,7 @@ The contents of the browser's address bar are retained:
 
 For information on defining URL patterns with the [`@page`](xref:mvc/views/razor#page) directive, see <xref:blazor/fundamentals/routing>.
 
-### Browser storage
+<h2 id="browser-storage-server">Browser storage</h2>
 
 For transient data that the user is actively creating, a commonly used storage location is the browser's [`localStorage`](https://developer.mozilla.org/docs/Web/API/Window/localStorage) and [`sessionStorage`](https://developer.mozilla.org/docs/Web/API/Window/sessionStorage) collections:
 
@@ -220,15 +220,6 @@ ASP.NET Core Protected Browser Storage leverages [ASP.NET Core Data Protection](
 > [!NOTE]
 > Protected Browser Storage relies on ASP.NET Core Data Protection and is only supported for Blazor Server apps.
 
-### Configuration
-
-1. Add a package reference to [`Microsoft.AspNetCore.Components.Web.Extensions`](https://www.nuget.org/packages/Microsoft.AspNetCore.Http.Extensions).
-1. In `Startup.ConfigureServices`, call `AddProtectedBrowserStorage` to add `localStorage` and `sessionStorage` services to the service collection:
-
-   ```csharp
-   services.AddProtectedBrowserStorage();
-   ```
-
 ### Save and load data within a component
 
 In any component that requires loading or saving data to browser storage, use the [`@inject`](xref:mvc/views/razor#inject) directive to inject an instance of either of the following:
@@ -239,7 +230,7 @@ In any component that requires loading or saving data to browser storage, use th
 The choice depends on which browser storage location you wish to use. In the following example, `sessionStorage` is used:
 
 ```razor
-@using Microsoft.AspNetCore.Components.Web.Extensions
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
 @inject ProtectedSessionStorage ProtectedSessionStore
 ```
 
@@ -320,7 +311,7 @@ To disable prerendering, open the `Pages/_Host.cshtml` file and change the `rend
 Prerendering might be useful for other pages that don't use `localStorage` or `sessionStorage`. To retain prerendering, defer the loading operation until the browser is connected to the circuit. The following is an example for storing a counter value:
 
 ```razor
-@using Microsoft.AspNetCore.Components.Web.Extensions
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
 @inject ProtectedLocalStorage ProtectedLocalStore
 
 @if (isConnected)
@@ -368,7 +359,7 @@ If many components rely on browser-based storage, re-implementing state provider
 In the following example of a `CounterStateProvider` component, counter data is persisted to `sessionStorage`:
 
 ```razor
-@using Microsoft.AspNetCore.Components.Web.Extensions
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
 @inject ProtectedSessionStorage ProtectedSessionStore
 
 @if (isLoaded)
@@ -692,7 +683,7 @@ To persist many different state objects and consume different subsets of objects
 
 ::: moniker-end
 
-## In-memory state container service
+<h2 id="in-memory-state-container-service-server">In-memory state container service</h2>
 
 [!INCLUDE[](~/includes/blazor-state-management/state-container.md)]
 

@@ -6,7 +6,7 @@ monikerRange: '>= aspnetcore-3.1'
 ms.author: riande
 ms.custom: mvc
 ms.date: 10/06/2020
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: blazor/security/server/additional-scenarios
 ---
 # ASP.NET Core Blazor Server additional security scenarios
@@ -119,13 +119,13 @@ using System.Threading.Tasks;
 
 public class WeatherForecastService
 {
-    private readonly HttpClient client;
+    private readonly HttpClient http;
     private readonly TokenProvider tokenProvider;
 
     public WeatherForecastService(IHttpClientFactory clientFactory, 
         TokenProvider tokenProvider)
     {
-        client = clientFactory.CreateClient();
+        http = clientFactory.CreateClient();
         this.tokenProvider = tokenProvider;
     }
 
@@ -135,7 +135,7 @@ public class WeatherForecastService
         var request = new HttpRequestMessage(HttpMethod.Get, 
             "https://localhost:5003/WeatherForecast");
         request.Headers.Add("Authorization", $"Bearer {token}");
-        var response = await client.SendAsync(request);
+        var response = await http.SendAsync(request);
         response.EnsureSuccessStatusCode();
 
         return await response.Content.ReadAsAsync<WeatherForecast[]>();
@@ -271,13 +271,13 @@ using System.Threading.Tasks;
 
 public class WeatherForecastService
 {
-    private readonly HttpClient client;
+    private readonly HttpClient http;
     private readonly TokenProvider tokenProvider;
 
     public WeatherForecastService(IHttpClientFactory clientFactory, 
         TokenProvider tokenProvider)
     {
-        client = clientFactory.CreateClient();
+        http = clientFactory.CreateClient();
         this.tokenProvider = tokenProvider;
     }
 
@@ -287,7 +287,7 @@ public class WeatherForecastService
         var request = new HttpRequestMessage(HttpMethod.Get, 
             "https://localhost:5003/WeatherForecast");
         request.Headers.Add("Authorization", $"Bearer {token}");
-        var response = await client.SendAsync(request);
+        var response = await http.SendAsync(request);
         response.EnsureSuccessStatusCode();
 
         return await response.Content.ReadAsAsync<WeatherForecast[]>();

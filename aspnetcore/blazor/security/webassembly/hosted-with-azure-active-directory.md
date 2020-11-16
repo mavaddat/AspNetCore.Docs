@@ -5,8 +5,8 @@ description: Learn how to secure an ASP.NET Core Blazor WebAssembly hosted app w
 monikerRange: '>= aspnetcore-3.1'
 ms.author: riande
 ms.custom: "devx-track-csharp, mvc"
-ms.date: 10/08/2020
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+ms.date: 11/02/2020
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: blazor/security/webassembly/hosted-with-azure-active-directory
 ---
 # Secure an ASP.NET Core Blazor WebAssembly hosted app with Azure Active Directory
@@ -14,6 +14,13 @@ uid: blazor/security/webassembly/hosted-with-azure-active-directory
 By [Javier Calvarro Nelson](https://github.com/javiercn) and [Luke Latham](https://github.com/guardrex)
 
 This article describes how to create a [hosted Blazor WebAssembly app](xref:blazor/hosting-models#blazor-webassembly) that uses [Azure Active Directory (AAD)](https://azure.microsoft.com/services/active-directory/) for authentication.
+
+::: moniker range=">= aspnetcore-5.0"
+
+> [!NOTE]
+> For Blazor WebAssembly apps created in Visual Studio that are configured to support accounts in an AAD organizational directory, Visual Studio doesn't configure the app correctly on project generation. This will be addressed in a future release of Visual Studio. This article shows how to create the app with the .NET Core CLI's `dotnet new` command. If you prefer to create the app with Visual Studio before the IDE is updated for the latest Blazor templates in ASP.NET Core 5.0, refer to each section of this article and confirm or update the app's configuration after Visual Studio creates the app.
+
+::: moniker-end
 
 ## Register apps in AAD and create solution
 
@@ -117,15 +124,17 @@ In an empty folder, replace the placeholders in the following command with the i
 dotnet new blazorwasm -au SingleOrg --api-client-id "{SERVER API APP CLIENT ID}" --app-id-uri "{SERVER API APP ID URI}" --client-id "{CLIENT APP CLIENT ID}" --default-scope "{DEFAULT SCOPE}" --domain "{TENANT DOMAIN}" -ho -o {APP NAME} --tenant-id "{TENANT ID}"
 ```
 
-| Placeholder                  | Azure portal name                                     | Example                                      |
-| ---------------------------- | ----------------------------------------------------- | -------------------------------------------- |
-| `{APP NAME}`                 | &mdash;                                               | `BlazorSample`                               |
-| `{CLIENT APP CLIENT ID}`     | Application (client) ID for the *`Client`* app        | `4369008b-21fa-427c-abaa-9b53bf58e538`       |
-| `{DEFAULT SCOPE}`            | Scope name                                            | `API.Access`                                 |
-| `{SERVER API APP CLIENT ID}` | Application (client) ID for the *Server API app*      | `41451fa7-82d9-4673-8fa5-69eff5a761fd`       |
-| `{SERVER API APP ID URI}`    | Application ID URI                                    | `api://41451fa7-82d9-4673-8fa5-69eff5a761fd` |
-| `{TENANT DOMAIN}`            | Primary/Publisher/Tenant domain                       | `contoso.onmicrosoft.com`                    |
-| `{TENANT ID}`                | Directory (tenant) ID                                 | `e86c78e2-8bb4-4c41-aefd-918e0565a45e`       |
+| Placeholder                  | Azure portal name                                     | Example                                        |
+| ---------------------------- | ----------------------------------------------------- | ---------------------------------------------- |
+| `{APP NAME}`                 | &mdash;                                               | `BlazorSample`                                 |
+| `{CLIENT APP CLIENT ID}`     | Application (client) ID for the *`Client`* app        | `4369008b-21fa-427c-abaa-9b53bf58e538`         |
+| `{DEFAULT SCOPE}`            | Scope name                                            | `API.Access`                                   |
+| `{SERVER API APP CLIENT ID}` | Application (client) ID for the *Server API app*      | `41451fa7-82d9-4673-8fa5-69eff5a761fd`         |
+| `{SERVER API APP ID URI}`    | Application ID URI&dagger;                            | `41451fa7-82d9-4673-8fa5-69eff5a761fd`&dagger; |
+| `{TENANT DOMAIN}`            | Primary/Publisher/Tenant domain                       | `contoso.onmicrosoft.com`                      |
+| `{TENANT ID}`                | Directory (tenant) ID                                 | `e86c78e2-8bb4-4c41-aefd-918e0565a45e`         |
+
+&dagger;The Blazor WebAssembly template automatically adds a scheme of `api://` to the App ID URI argument passed in the `dotnet new` command. When providing the App ID URI for the `{SERVER API APP ID URI}` placeholder and if the scheme is `api://`, remove the scheme (`api://`) from the argument, as the example value in the preceding table shows. If the App ID URI is a custom value or has some other scheme (for example, `https://` for an untrusted publisher domain similar to `https://contoso.onmicrosoft.com/41451fa7-82d9-4673-8fa5-69eff5a761fd`), you must manually update the default scope URI and remove the `api://` scheme after the *`Client`* app is created by the template. For more information, see the note in the [Access token scopes](#access-token-scopes) section. The Blazor WebAssembly template might be changed in a future release of ASP.NET Core to address these scenarios. For more information, see [Double scheme for App ID URI with Blazor WASM template (hosted, single org) (dotnet/aspnetcore #27417)](https://github.com/dotnet/aspnetcore/issues/27417).
 
 The output location specified with the `-o|--output` option creates a project folder if it doesn't exist and becomes part of the app's name.
 
@@ -414,6 +423,29 @@ builder.Services.AddMsalAuthentication(options =>
     options.ProviderOptions.DefaultAccessTokenScopes.Add("{SCOPE URI}");
 });
 ```
+
+> [!NOTE]
+> The Blazor WebAssembly template automatically adds a scheme of `api://` to the App ID URI argument passed in the `dotnet new` command. When generating an app from the Blazor project template, confirm that the value of the default access token scope uses either the correct custom App ID URI value that you provided in the Azure portal or a value with **one** of the following formats:
+>
+> * When the publisher domain of the directory is **trusted**, the default access token scope is typically a value similar to the following example, where `API.Access` is the default scope name:
+>
+>   ```csharp
+>   options.ProviderOptions.DefaultAccessTokenScopes.Add(
+>       "api://41451fa7-82d9-4673-8fa5-69eff5a761fd/API.Access");
+>   ```
+>
+>   Inspect the value for a double scheme (`api://api://...`). If a double scheme is present, remove the first `api://` scheme from the value.
+>
+> * When the publisher domain of the directory is **untrusted**, the default access token scope is typically a value similar to the following example, where `API.Access` is the default scope name:
+>
+>   ```csharp
+>   options.ProviderOptions.DefaultAccessTokenScopes.Add(
+>       "https://contoso.onmicrosoft.com/41451fa7-82d9-4673-8fa5-69eff5a761fd/API.Access");
+>   ```
+>
+>   Inspect the value for an extra `api://` scheme (`api://https://contoso.onmicrosoft.com/...`). If an extra `api://` scheme is present, remove the `api://` scheme from the value.
+>
+> The Blazor WebAssembly template might be changed in a future release of ASP.NET Core to address these scenarios. For more information, see [Double scheme for App ID URI with Blazor WASM template (hosted, single org) (dotnet/aspnetcore #27417)](https://github.com/dotnet/aspnetcore/issues/27417).
 
 Specify additional scopes with `AdditionalScopesToConsent`:
 

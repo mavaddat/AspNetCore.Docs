@@ -3,9 +3,9 @@ title: "Tutorial: Create a web API with ASP.NET Core"
 author: rick-anderson
 description: Learn how to build a web API with ASP.NET Core.
 ms.author: riande
-ms.custom: mvc
+ms.custom: mvc, devx-track-js
 ms.date: 08/13/2020
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR, Models]
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR, Models]
 uid: tutorials/first-web-api
 ---
 
@@ -102,7 +102,7 @@ The following diagram shows the design of the app.
 
   ![macOS API template selection](first-web-api-mac/_static/api_template.png)
 
-* In the **Configure the new ASP.NET Core Web API** dialog, select the latest .NET Core 3.x **Target Framework**. Select **Next**.
+* In the **Configure the new ASP.NET Core Web API** dialog, select the latest .NET Core 5.x **Target Framework**. Select **Next**.
 
 * Enter *TodoApi* for the **Project Name** and then select **Create**.
 
@@ -504,7 +504,7 @@ Use Postman to delete a to-do item:
 * Set the URI of the object to delete (for example `https://localhost:5001/api/TodoItems/1`).
 * Select **Send**.
 
-<a name="over-post"></a>
+<a name="over-post-v5"></a>
 
 ## Prevent over-posting
 
@@ -519,7 +519,7 @@ A DTO may be used to:
 
 To demonstrate the DTO approach, update the `TodoItem` class to include a secret field:
 
-[!code-csharp[](first-web-api/samples/5.x/TodoApiDTO/Models/TodoItem.cs?name=snippet&highlight=6)]
+[!code-csharp[](first-web-api/samples/5.x/TodoApiDTO/Models/TodoItem.cs?name=snippet&highlight=8)]
 
 The secret field needs to be hidden from this app, but an administrative app could choose to expose it.
 
@@ -992,6 +992,7 @@ Use Postman to delete a to-do item:
 * Select **Send**.
 
 <a name="over-post"></a>
+<a name="over-post-v3"></a>
 
 ## Prevent over-posting
 
@@ -1346,7 +1347,7 @@ The `CreatedAtAction` method:
 
 * Build the project.
 * In Postman, set the HTTP method to `POST`.
-* Set the URI to `https://localhost:<port>/api/TodoItem`. For example, `https://localhost:5001/api/TodoItem`.
+* Set the URI to `https://localhost:<port>/api/Todo`. For example, `https://localhost:5001/api/Todo`.
 * Select the **Body** tab.
 * Select the **raw** radio button.
 * Set the type to **JSON (application/json)**.

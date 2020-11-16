@@ -6,7 +6,7 @@ monikerRange: '>= aspnetcore-5.0'
 ms.author: riande
 ms.custom: mvc
 ms.date: 01/13/2020
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: host-and-deploy/iis/app-offline
 ---
 # App Offline file (`app_offline.htm`)
@@ -30,11 +30,12 @@ Files in the deployment folder are locked when the app is running. Locked files 
 ```powershell
 $pathToApp = '{PATH TO APP}'
 
-New-Item -Path $pathToApp app_offline.htm
+
+New-Item -Path $pathToApp -Name "app_offline.htm" -ItemType "file"
 
 # Provide script commands here to deploy the app
 
-Remove-Item -Path $pathToApp app_offline.htm
+Remove-Item -Path $pathToApp\app_offline.htm
 ```
 
 In the preceding PowerShell script:

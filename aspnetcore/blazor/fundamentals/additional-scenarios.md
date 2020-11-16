@@ -5,8 +5,8 @@ description: Learn about additional scenarios for ASP.NET Core Blazor hosting mo
 monikerRange: '>= aspnetcore-3.1'
 ms.author: riande
 ms.custom: mvc
-ms.date: 08/12/2020
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+ms.date: 10/27/2020
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: blazor/fundamentals/additional-scenarios
 ---
 # ASP.NET Core Blazor hosting model configuration
@@ -85,32 +85,21 @@ The following table describes the CSS classes applied to the `components-reconne
 
 ## Render mode
 
+::: moniker range=">= aspnetcore-5.0"
+
+*This section applies to hosted Blazor WebAssembly and Blazor Server.*
+
+Blazor apps are set up by default to prerender the UI on the server. For more information, see <xref:mvc/views/tag-helpers/builtin-th/component-tag-helper>.
+
+::: moniker-end
+
+::: moniker range="< aspnetcore-5.0"
+
 *This section applies to Blazor Server.*
 
-Blazor Server apps are set up by default to prerender the UI on the server before the client connection to the server is established. This is set up in the `_Host.cshtml` Razor page:
+Blazor Server apps are set up by default to prerender the UI on the server before the client connection to the server is established. For more information, see <xref:mvc/views/tag-helpers/builtin-th/component-tag-helper>.
 
-```cshtml
-<body>
-    <app>
-      <component type="typeof(App)" render-mode="ServerPrerendered" />
-    </app>
-
-    <script src="_framework/blazor.server.js"></script>
-</body>
-```
-
-<xref:Microsoft.AspNetCore.Mvc.TagHelpers.ComponentTagHelper.RenderMode> configures whether the component:
-
-* Is prerendered into the page.
-* Is rendered as static HTML on the page or if it includes the necessary information to bootstrap a Blazor app from the user agent.
-
-| Render mode | Description |
-| --- | --- |
-| <xref:Microsoft.AspNetCore.Mvc.Rendering.RenderMode.ServerPrerendered> | Renders the component into static HTML and includes a marker for a Blazor Server app. When the user-agent starts, this marker is used to bootstrap a Blazor app. |
-| <xref:Microsoft.AspNetCore.Mvc.Rendering.RenderMode.Server> | Renders a marker for a Blazor Server app. Output from the component isn't included. When the user-agent starts, this marker is used to bootstrap a Blazor app. |
-| <xref:Microsoft.AspNetCore.Mvc.Rendering.RenderMode.Static> | Renders the component into static HTML. |
-
-Rendering server components from a static HTML page isn't supported.
+::: moniker-end
 
 ## Initialize the Blazor circuit
 
@@ -284,6 +273,8 @@ window.addEventListener('pagehide', () => {
 });
 ```
 
+<!-- HOLD for reactivation at 5x
+
 ## Influence HTML `<head>` tag elements
 
 *This section applies to the upcoming ASP.NET Core 5.0 release of Blazor WebAssembly and Blazor Server.*
@@ -314,6 +305,8 @@ When one of the framework components is used in a child component, the rendered 
 
 * Can be modified by application state. A hard-coded HTML tag can't be modified by application state.
 * Is removed from the HTML `<head>` when the parent component is no longer rendered.
+
+-->
 
 ::: moniker-end
 
@@ -357,6 +350,15 @@ To create additional file mappings with a <xref:Microsoft.AspNetCore.StaticFiles
   app.UseStaticFiles();
   ```
 
+* You can avoid interfering with serving `_framework/blazor.server.js` by using <xref:Microsoft.AspNetCore.Builder.MapWhenExtensions.MapWhen%2A> to execute a custom Static File Middleware:
+
+  ```csharp
+  app.MapWhen(ctx => !ctx.Request.Path
+      .StartsWithSegments("_framework/blazor.server.js", 
+          subApp => subApp.UseStaticFiles(new StaticFileOptions(){ ... })));
+  ```
+
 ## Additional resources
 
 * <xref:fundamentals/logging/index>
+* [Blazor Server reconnection events and component lifecycle events](xref:blazor/components/lifecycle#blazor-server-reconnection-events)

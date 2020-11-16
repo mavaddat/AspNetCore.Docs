@@ -6,7 +6,7 @@ monikerRange: '>= aspnetcore-3.1'
 ms.author: riande
 ms.custom: mvc
 ms.date: 10/09/2020
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: blazor/host-and-deploy/webassembly
 ---
 # Host and deploy ASP.NET Core Blazor WebAssembly
@@ -273,6 +273,8 @@ Use the following approaches for static assets:
   <img alt="..." src="_content/{LIBRARY NAME}/{ASSET FILE NAME}" />
   ```
 
+<!-- HOLD for reactivation at 5.x
+
 ::: moniker range=">= aspnetcore-5.0"
 
 Components provided to a client app by a class library are referenced normally. If any components require stylesheets or JavaScript files, use either of the following approaches to obtain the static assets:
@@ -286,9 +288,15 @@ The preceding approaches are demonstrated in the following examples.
 
 ::: moniker range="< aspnetcore-5.0"
 
+-->
+
 Components provided to a client app by a class library are referenced normally. If any components require stylesheets or JavaScript files, the client app's `wwwroot/index.html` file must include the correct static asset links. These approaches are demonstrated in the following examples.
 
+<!-- HOLD for reactivation at 5.x
+
 ::: moniker-end
+
+-->
 
 Add the following `Jeep` component to one of the client apps. The `Jeep` component uses:
 
@@ -321,6 +329,8 @@ Add the following `Jeep` component to one of the client apps. The `Jeep` compone
 
 > [!WARNING]
 > Do **not** publish images of vehicles publicly unless you own the images. Otherwise, you risk copyright infringement.
+
+<!-- HOLD for reactivation at 5.x
 
 ::: moniker range=">= aspnetcore-5.0"
 
@@ -355,6 +365,8 @@ An alternative to using the [`Link` component](xref:blazor/fundamentals/addition
 
 ::: moniker range="< aspnetcore-5.0"
 
+-->
+
 The library's `jeep-yj.png` image can also be added to the library's `Component1` component (`Component1.razor`):
 
 ```razor
@@ -380,7 +392,11 @@ The client app's `wwwroot/index.html` file requests the library's stylesheet wit
 </head>
 ```
 
+<!-- HOLD for reactivation at 5.x
+
 ::: moniker-end
+
+-->
 
 Add navigation to the `Jeep` component in the client app's `NavMenu` component (`Shared/NavMenu.razor`):
 
@@ -434,7 +450,13 @@ When a Blazor project is published, a `web.config` file is created with the foll
   
 #### Use a custom web.config
 
-To use a custom `web.config` file, place the custom `web.config` file at the root of the project folder and publish the project.
+To use a custom `web.config` file, place the custom `web.config` file at the root of the project folder. Configure the project to publish IIS-specific assets using `PublishIISAssets` in the app's project file and publish the project:
+
+```xml
+<PropertyGroup>
+  <PublishIISAssets>true</PublishIISAssets>
+</PropertyGroup>
+```
 
 #### Install the URL Rewrite Module
 
@@ -484,7 +506,16 @@ Removing the handler or disabling inheritance is performed in addition to [confi
 
 #### Brotli and Gzip compression
 
-IIS can be configured via `web.config` to serve Brotli or Gzip compressed Blazor assets. For an example configuration, see [`web.config`](https://github.com/dotnet/AspNetCore.Docs/blob/master/aspnetcore/blazor/host-and-deploy/webassembly/_samples/web.config?raw=true).
+*This section only applies to standalone Blazor WebAssembly apps. Hosted Blazor apps use a default ASP.NET Core app `web.config` file, not the file linked in this section.*
+
+IIS can be configured via `web.config` to serve Brotli or Gzip compressed Blazor assets for standalone Blazor WebAssembly apps. For an example configuration file, see [`web.config`](https://github.com/dotnet/AspNetCore.Docs/blob/master/aspnetcore/blazor/host-and-deploy/webassembly/_samples/web.config?raw=true).
+
+Additional configuration of the example `web.config` file might be required in the following scenarios:
+
+* The app's specification calls for either of the following:
+  * Serving compressed files that aren't configured by the example `web.config` file.
+  * Serving compressed files configured by the example `web.config` file in an uncompressed format.
+* The server's IIS configuration (for example, `applicationHost.config`) provides server-level IIS defaults. Depending on the server-level configuration, the app might require a different IIS configuration than what the example `web.config` file contains.
 
 #### Troubleshooting
 

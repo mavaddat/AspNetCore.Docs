@@ -4,7 +4,7 @@ author: rick-anderson
 description: Part 3 of tutorial series on ASP.NET Core MVC.
 ms.author: riande
 ms.date: 8/04/2019
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: tutorials/first-mvc-app/adding-view
 ---
 
@@ -83,8 +83,20 @@ Select the menu links (**MvcMovie**, **Home**, and **Privacy**). Each page shows
 ## Change the title, footer, and menu link in the layout file
 
 Replace the content of the *Views/Shared/_Layout.cshtml* file with the following markup. The changes are highlighted:
+::: moniker-end
+
+::: moniker range=">= aspnetcore-3.0 < aspnetcore-5.0"
 
 [!code-cshtml[](~/tutorials/first-mvc-app/start-mvc/sample/MvcMovie3/Views/Shared/_Layout.cshtml?highlight=6,14,40)]
+
+::: moniker-end
+
+::: moniker range=">= aspnetcore-5.0"
+
+[!code-cshtml[](~/tutorials/first-mvc-app/start-mvc/sample/MvcMovie5/Views/Shared/_Layout.cshtml?highlight=6,14,40)]
+::: moniker-end
+
+::: moniker range=">= aspnetcore-3.0"
 
 The preceding markup made the following changes:
 

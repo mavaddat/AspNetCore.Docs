@@ -5,19 +5,17 @@ description: Learn how to secure an ASP.NET Core Blazor WebAssembly standalone a
 monikerRange: '>= aspnetcore-3.1'
 ms.author: riande
 ms.custom: mvc
-ms.date: 10/08/2020
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+ms.date: 10/27/2020
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: blazor/security/webassembly/standalone-with-microsoft-accounts
 ---
 # Secure an ASP.NET Core Blazor WebAssembly standalone app with Microsoft Accounts
 
 By [Javier Calvarro Nelson](https://github.com/javiercn) and [Luke Latham](https://github.com/guardrex)
 
-To create a [standalone Blazor WebAssembly app](xref:blazor/hosting-models#blazor-webassembly) that uses [Microsoft Accounts with Azure Active Directory (AAD)](/azure/active-directory/develop/quickstart-register-app#register-a-new-application-using-the-azure-portal) for authentication:
+This article covers how to create a [standalone Blazor WebAssembly app](xref:blazor/hosting-models#blazor-webassembly) that uses [Microsoft Accounts with Azure Active Directory (AAD)](/azure/active-directory/develop/quickstart-register-app#register-a-new-application-using-the-azure-portal) for authentication.
 
-[Create an AAD tenant and web application](/azure/active-directory/develop/v2-overview)
-
-Register a AAD app in the **Azure Active Directory** > **App registrations** area of the Azure portal:
+Register an AAD app in the **Azure Active Directory** > **App registrations** area of the Azure portal:
 
 ::: moniker range=">= aspnetcore-5.0"
 

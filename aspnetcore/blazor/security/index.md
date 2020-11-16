@@ -6,7 +6,7 @@ monikerRange: '>= aspnetcore-3.1'
 ms.author: riande
 ms.custom: mvc
 ms.date: 05/19/2020
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: blazor/security/index
 ---
 # ASP.NET Core Blazor authentication and authorization
@@ -22,7 +22,7 @@ Security scenarios differ between Blazor Server and Blazor WebAssembly apps. Bec
 
 Blazor WebAssembly apps run on the client. Authorization is *only* used to determine which UI options to show. Since client-side checks can be modified or bypassed by a user, a Blazor WebAssembly app can't enforce authorization access rules.
 
-[Razor Pages authorization conventions](xref:security/authorization/razor-pages-authorization) don't apply to routable Razor components. If a non-routable Razor component is [embedded in a page](xref:blazor/components/integrate-components-into-razor-pages-and-mvc-apps#render-components-from-a-page-or-view), the page's authorization conventions indirectly affect the Razor component along with the rest of the page's content.
+[Razor Pages authorization conventions](xref:security/authorization/razor-pages-authorization) don't apply to routable Razor components. If a non-routable Razor component is [embedded in a page](xref:blazor/components/prerendering-and-integration), the page's authorization conventions indirectly affect the Razor component along with the rest of the page's content.
 
 > [!NOTE]
 > <xref:Microsoft.AspNetCore.Identity.SignInManager%601> and <xref:Microsoft.AspNetCore.Identity.UserManager%601> aren't supported in Razor components.
@@ -238,7 +238,7 @@ Each of these concepts is the same as in an ASP.NET Core MVC or Razor Pages app.
 
 ## AuthorizeView component
 
-The <xref:Microsoft.AspNetCore.Components.Authorization.AuthorizeView> component selectively displays UI depending on whether the user is authorized to see it. This approach is useful when you only need to *display* data for the user and don't need to use the user's identity in procedural logic.
+The <xref:Microsoft.AspNetCore.Components.Authorization.AuthorizeView> component selectively displays UI content depending on whether the user is authorized. This approach is useful when you only need to *display* data for the user and don't need to use the user's identity in procedural logic.
 
 The component exposes a `context` variable of type <xref:Microsoft.AspNetCore.Components.Authorization.AuthenticationState>, which you can use to access information about the signed-in user:
 
@@ -249,24 +249,29 @@ The component exposes a `context` variable of type <xref:Microsoft.AspNetCore.Co
 </AuthorizeView>
 ```
 
-You can also supply different content for display if the user isn't authenticated:
+You can also supply different content for display if the user isn't authorized:
 
 ```razor
 <AuthorizeView>
     <Authorized>
         <h1>Hello, @context.User.Identity.Name!</h1>
-        <p>You can only see this content if you're authenticated.</p>
+        <p>You can only see this content if you're authorized.</p>
+        <button @onclick="SecureMethod">Authorized Only Button</button>
     </Authorized>
     <NotAuthorized>
         <h1>Authentication Failure!</h1>
         <p>You're not signed in.</p>
     </NotAuthorized>
 </AuthorizeView>
+
+@code {
+    private void SecureMethod() { ... }
+}
 ```
 
-The <xref:Microsoft.AspNetCore.Components.Authorization.AuthorizeView> component can be used in the `NavMenu` component (`Shared/NavMenu.razor`) to display a list item (`<li>...</li>`) for a [`NavLink` component](xref:blazor/fundamentals/routing#navlink-component) (<xref:Microsoft.AspNetCore.Components.Routing.NavLink>), but note that this approach only removes the list item from the rendered output. It doesn't prevent the user from navigating to the component.
-
 The content of `<Authorized>` and `<NotAuthorized>` tags can include arbitrary items, such as other interactive components.
+
+A default event handler for an authorized element, such as the `SecureMethod` method for the `<button>` element in the preceding example, can only be invoked by an authorized user.
 
 Authorization conditions, such as roles or policies that control UI options or access, are covered in the [Authorization](#authorization) section.
 
@@ -274,6 +279,8 @@ If authorization conditions aren't specified, <xref:Microsoft.AspNetCore.Compone
 
 * Authenticated (signed-in) users as authorized.
 * Unauthenticated (signed-out) users as unauthorized.
+
+The <xref:Microsoft.AspNetCore.Components.Authorization.AuthorizeView> component can be used in the `NavMenu` component (`Shared/NavMenu.razor`) to display a list item (`<li>...</li>`) for a [`NavLink` component](xref:blazor/fundamentals/routing#navlink-component) (<xref:Microsoft.AspNetCore.Components.Routing.NavLink>), but note that this approach only removes the list item from the rendered output. It doesn't prevent the user from navigating to the component.
 
 ### Role-based and policy-based authorization
 

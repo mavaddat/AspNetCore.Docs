@@ -5,8 +5,8 @@ description: Learn how to secure a hosted ASP.NET Core Blazor WebAssembly app wi
 monikerRange: '>= aspnetcore-3.1'
 ms.author: riande
 ms.custom: mvc
-ms.date: 09/02/2020
-no-loc: ["ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+ms.date: 10/27/2020
+no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: blazor/security/webassembly/hosted-with-identity-server
 ---
 # Secure an ASP.NET Core Blazor WebAssembly hosted app with Identity Server
@@ -402,7 +402,7 @@ public class ProfileService : IProfileService
     {
     }
 
-    public Task GetProfileDataAsync(ProfileDataRequestContext context)
+    public async Task GetProfileDataAsync(ProfileDataRequestContext context)
     {
         var nameClaim = context.Subject.FindAll(JwtClaimTypes.Name);
         context.IssuedClaims.AddRange(nameClaim);
@@ -410,12 +410,12 @@ public class ProfileService : IProfileService
         var roleClaims = context.Subject.FindAll(JwtClaimTypes.Role);
         context.IssuedClaims.AddRange(roleClaims);
 
-        return Task.CompletedTask;
+        await Task.CompletedTask;
     }
 
-    public Task IsActiveAsync(IsActiveContext context)
+    public async Task IsActiveAsync(IsActiveContext context)
     {
-        return Task.CompletedTask;
+        await Task.CompletedTask;
     }
 }
 ```
