@@ -4,7 +4,8 @@ author: rick-anderson
 description: Part 2 of tutorial series on Razor Pages. In this section, model classes are added.
 ms.author: riande
 ms.date: 11/11/2020
-no-loc: [Index, Create, Delete, appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+ms.custom: contperf-fy21q2
+no-loc: [Index, appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: tutorials/razor-pages/model
 ---
 # Part 2, add a model to a Razor Pages app in ASP.NET Core
@@ -142,7 +143,7 @@ In this section, the movie model is scaffolded. That is, the scaffolding tool pr
 1. Complete the **Add Razor Pages using Entity Framework (CRUD)** dialog:
    1. In the **Model class** drop down, select **Movie (RazorPagesMovie.Models)**.
    1. In the **Data context class** row, select the **+** (plus) sign.
-      1. In the **Add Data Context** dialog, the class name *RazorPagesMovie.Data.RazorPagesMovieContext* is generated.
+      1. In the **Add Data Context** dialog, the class name `RazorPagesMovie.Data.RazorPagesMovieContext` is generated.
    1. Select **Add**.
 
    ![Image from the previous instructions.](model/_static/3/arp.png)
@@ -208,7 +209,7 @@ When SQLite is selected, the template generated code is ready for development. T
    ![Image from the previous instructions.](model/_static/add_scaffoldMac.png)
 
 1. Complete the **Add Razor Pages using Entity Framework (CRUD)** dialog:
-   1. In the **DbContext Class to use:** row, name the class *RazorPagesMovie.Data.RazorPagesMovieContext*.
+   1. In the **DbContext Class to use:** row, name the class `RazorPagesMovie.Data.RazorPagesMovieContext`.
    1. Select **Finish**.
 
    ![Image from the previous instructions.](model/_static/5/arpMac.png)

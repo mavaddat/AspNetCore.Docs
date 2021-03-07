@@ -11,8 +11,6 @@ uid: blazor/call-web-api
 ---
 # Call a web API from ASP.NET Core Blazor
 
-By [Luke Latham](https://github.com/guardrex), [Daniel Roth](https://github.com/danroth27), and [Juan De la Cruz](https://github.com/juandelacruz23)
-
 > [!NOTE]
 > This topic applies to Blazor WebAssembly. [Blazor Server](xref:blazor/hosting-models#blazor-server) apps call web APIs using <xref:System.Net.Http.HttpClient> instances, typically created using <xref:System.Net.Http.IHttpClientFactory>. For guidance that applies to Blazor Server, see <xref:fundamentals/http-requests>.
 
@@ -138,7 +136,7 @@ JSON helper methods send requests to a URI (a web API in the following examples)
       }
 
       private async Task SaveItem() =>
-          await Http.PutAsJsonAsync($"api/TodoItems/{editItem.Id}, editItem);
+          await Http.PutAsJsonAsync($"api/TodoItems/{editItem.Id}", editItem);
   }
   ```
   
@@ -397,5 +395,10 @@ For general information on CORS with ASP.NET Core apps, see <xref:security/cors>
 * <xref:blazor/security/webassembly/additional-scenarios>: Includes coverage on using <xref:System.Net.Http.HttpClient> to make secure web API requests.
 * <xref:fundamentals/http-requests>
 * <xref:security/enforcing-ssl>
+::: moniker range=">= aspnetcore-5.0"
+* [Kestrel HTTPS endpoint configuration](xref:fundamentals/servers/kestrel/endpoints)
+::: moniker-end
+::: moniker range="< aspnetcore-5.0"
 * [Kestrel HTTPS endpoint configuration](xref:fundamentals/servers/kestrel#endpoint-configuration)
+::: moniker-end
 * [Cross Origin Resource Sharing (CORS) at W3C](https://www.w3.org/TR/cors/)

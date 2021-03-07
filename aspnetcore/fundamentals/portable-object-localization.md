@@ -21,7 +21,7 @@ This article walks through the steps for using Portable Object (PO) files in an 
 
 ## What is a PO file?
 
-PO files are distributed as text files containing the translated strings for a given language. Some advantages of using PO files instead *.resx* files include:
+PO files are distributed as text files containing the translated strings for a given language. Some advantages of using PO files instead of *.resx* files include:
 - PO files support pluralization; *.resx* files don't support pluralization.
 - PO files aren't compiled like *.resx* files. As such, specialized tooling and build steps aren't required.
 - PO files work well with collaborative online editing tools.
@@ -64,7 +64,7 @@ This example is based on an ASP.NET Core MVC application generated from a Visual
 
 ### Referencing the package
 
-Add a reference to the `OrchardCore.Localization.Core` NuGet package. It's available on [MyGet](https://www.myget.org/) at the following package source: https://www.myget.org/F/orchardcore-preview/api/v3/index.json
+Add a reference to the `OrchardCore.Localization.Core` NuGet package.
 
 The *.csproj* file now contains a line similar to the following (version number may vary):
 
@@ -280,7 +280,7 @@ This example is based on an ASP.NET Core MVC application generated from a Visual
 
 ### Referencing the package
 
-Add a reference to the `OrchardCore.Localization.Core` NuGet package. It's available on [MyGet](https://www.myget.org/) at the following package source: https://www.myget.org/F/orchardcore-preview/api/v3/index.json
+Add a reference to the `OrchardCore.Localization.Core` NuGet package.
 
 The *.csproj* file now contains a line similar to the following (version number may vary):
 

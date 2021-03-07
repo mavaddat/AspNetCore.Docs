@@ -12,8 +12,6 @@ zone_pivot_groups: blazor-hosting-models
 ---
 # Prerender and integrate ASP.NET Core Razor components
 
-By [Luke Latham](https://github.com/guardrex) and [Daniel Roth](https://github.com/danroth27)
-
 ::: zone pivot="webassembly"
 
 ::: moniker range=">= aspnetcore-5.0"
@@ -24,7 +22,7 @@ Razor components can be integrated into Razor Pages and MVC apps in a hosted Bla
 
 To set up prerendering for a Blazor WebAssembly app:
 
-1. Host the Blazor WebAssembly app in an ASP.NET Core app. A standalone Blazor WebAssembly app can be added to an ASP.NET Core solution, or you can use a hosted Blazor WebAssembly app created from the Blazor Hosted project template.
+1. Host the Blazor WebAssembly app in an ASP.NET Core app. A standalone Blazor WebAssembly app can be added to an ASP.NET Core solution, or you can use a hosted Blazor WebAssembly app created from the [Blazor WebAssembly project template](xref:blazor/project-structure).
 
 1. Remove the default static `wwwroot/index.html` file from the Blazor WebAssembly client project.
 
@@ -61,7 +59,7 @@ To set up prerendering for a Blazor WebAssembly app:
 
    * Call `UseDeveloperExceptionPage` on the app builder in the Development environment.
    * Call `UseBlazorFrameworkFiles` on the app builder.
-   * Change the fallback from the `index.html` page (`endpoints.MapFallbackToFile("index.html");`) to the `_Host.cshtml` page.
+   * Change the fallback from the `index.html` file (`endpoints.MapFallbackToFile("index.html");`) to the `_Host.cshtml` page: `endpoints.MapFallbackToPage("/_Host");`.
 
    ```csharp
    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -291,6 +289,8 @@ To support routable Razor components in Razor Pages apps:
    </Router>
    ```
 
+   [!INCLUDE[](~/blazor/includes/prefer-exact-matches.md)]
+
 1. Add a `_Host.cshtml` file to the `Pages` folder with the following content:
 
    ```cshtml
@@ -359,6 +359,8 @@ To support routable Razor components in MVC apps:
        </NotFound>
    </Router>
    ```
+
+   [!INCLUDE[](~/blazor/includes/prefer-exact-matches.md)]
 
 1. Add a `_Host.cshtml` file to the `Views/Home` folder with the following content:
 

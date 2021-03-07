@@ -4,7 +4,8 @@ author: rick-anderson
 description: Part 6 of tutorial series on Razor Pages.
 ms.author: riande
 ms.date: 12/05/2019
-no-loc: [Index, Create, Delete, appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+ms.custom: contperf-fy21q2
+no-loc: [Index, appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: tutorials/razor-pages/search
 ---
 # Part 6, add search to ASP.NET Core Razor Pages
@@ -52,7 +53,7 @@ var movies = from m in _context.Movie
              select m;
 ```
 
-The query is *only* defined at this point, it has **not** been run against the database.
+The query is only ***defined*** at this point, it has ***not*** been run against the database.
 
 If the `SearchString` property is not null or empty, the movies query is modified to filter on the search string:
 

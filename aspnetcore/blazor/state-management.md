@@ -12,8 +12,6 @@ zone_pivot_groups: blazor-hosting-models
 ---
 # ASP.NET Core Blazor state management
 
-By [Steve Sanderson](https://github.com/SteveSandersonMS) and [Luke Latham](https://github.com/guardrex)
-
 ::: zone pivot="webassembly"
 
 User state created in a Blazor WebAssembly app is held in the browser's memory.
@@ -26,6 +24,9 @@ Examples of user state held in browser memory include:
 * Values set through [JavaScript interop](xref:blazor/call-javascript-from-dotnet) calls.
 
 When a user closes and re-opens their browser or reloads the page, user state held in the browser's memory is lost.
+
+> [!NOTE]
+> [Protected Browser Storage](xref:blazor/state-management?pivots=server#aspnet-core-protected-browser-storage) (<xref:Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage?displayProperty=fullName> namespace) relies on ASP.NET Core Data Protection and is only supported for Blazor Server apps.
 
 ## Persist state across browser sessions
 
@@ -106,7 +107,7 @@ Generally, `sessionStorage` is safer to use. `sessionStorage` avoids the risk th
 
 <h2 id="in-memory-state-container-service-wasm">In-memory state container service</h2>
 
-[!INCLUDE[](~/includes/blazor-state-management/state-container.md)]
+[!INCLUDE[](~/blazor/includes/state-container.md)]
 
 ## Additional resources
 
@@ -236,7 +237,7 @@ The choice depends on which browser storage location you wish to use. In the fol
 
 The `@using` directive can be placed in the app's `_Imports.razor` file instead of in the component. Use of the `_Imports.razor` file makes the namespace available to larger segments of the app or the whole app.
 
-To persist the `currentCount` value in the `Counter` component of an app based on the Blazor Server project template, modify the `IncrementCount` method to use `ProtectedSessionStore.SetAsync`:
+To persist the `currentCount` value in the `Counter` component of an app based on the [Blazor Server project template](xref:blazor/project-structure), modify the `IncrementCount` method to use `ProtectedSessionStore.SetAsync`:
 
 ```csharp
 private async Task IncrementCount()
@@ -401,11 +402,13 @@ To use the `CounterStateProvider` component, wrap an instance of the component a
 
 ```razor
 <CounterStateProvider>
-    <Router AppAssembly="typeof(Startup).Assembly">
+    <Router AppAssembly="@typeof(Program).Assembly">
         ...
     </Router>
 </CounterStateProvider>
 ```
+
+[!INCLUDE[](~/blazor/includes/prefer-exact-matches.md)]
 
 Wrapped components receive and can modify the persisted counter state. The following `Counter` component implements the pattern:
 
@@ -482,7 +485,7 @@ The choice depends on which browser storage location you wish to use. In the fol
 
 The `@using` statement can be placed into an `_Imports.razor` file instead of in the component. Use of the `_Imports.razor` file makes the namespace available to larger segments of the app or the whole app.
 
-To persist the `currentCount` value in the `Counter` component of an app based on the Blazor Server project template, modify the `IncrementCount` method to use `ProtectedSessionStore.SetAsync`:
+To persist the `currentCount` value in the `Counter` component of an app based on the [Blazor Server project template](xref:blazor/project-structure), modify the `IncrementCount` method to use `ProtectedSessionStore.SetAsync`:
 
 ```csharp
 private async Task IncrementCount()
@@ -644,11 +647,13 @@ To use the `CounterStateProvider` component, wrap an instance of the component a
 
 ```razor
 <CounterStateProvider>
-    <Router AppAssembly="typeof(Startup).Assembly">
+    <Router AppAssembly="@typeof(Program).Assembly">
         ...
     </Router>
 </CounterStateProvider>
 ```
+
+[!INCLUDE[](~/blazor/includes/prefer-exact-matches.md)]
 
 Wrapped components receive and can modify the persisted counter state. The following `Counter` component implements the pattern:
 
@@ -685,6 +690,6 @@ To persist many different state objects and consume different subsets of objects
 
 <h2 id="in-memory-state-container-service-server">In-memory state container service</h2>
 
-[!INCLUDE[](~/includes/blazor-state-management/state-container.md)]
+[!INCLUDE[](~/blazor/includes/state-container.md)]
 
 ::: zone-end

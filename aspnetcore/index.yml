@@ -124,7 +124,7 @@ conceptualContent:
         - url: mvc/overview.md
           itemType: overview
           text: "Overview"
-        - url: tutorials/first-mvc-app/index.md
+        - url: tutorials/first-mvc-app/start-mvc.md
           itemType: get-started
           text: "Create your first ASP.NET Core MVC app"
         - url: mvc/views/overview.md
@@ -152,7 +152,7 @@ conceptualContent:
         - url: signalr/introduction.md
           itemType: get-started
           text: "Create your first SignalR app"
-        - url: tutorials/signalr-blazor-webassembly.md
+        - url: tutorials/signalr-blazor.md
           itemType: tutorial
           text: "SignalR with Blazor WebAssembly"
         - url: tutorials/signalr-typescript-webpack.md

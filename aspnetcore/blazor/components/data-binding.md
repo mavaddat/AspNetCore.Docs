@@ -11,8 +11,6 @@ uid: blazor/components/data-binding
 ---
 # ASP.NET Core Blazor data binding
 
-By [Luke Latham](https://github.com/guardrex), [Daniel Roth](https://github.com/danroth27), and [Steve Sanderson](https://github.com/SteveSandersonMS)
-
 Razor components provide data binding features via an HTML element attribute named [`@bind`](xref:mvc/views/razor#bind) with a field, property, or Razor expression value.
 
 The following example binds an `<input>` element to the `currentValue` field and an `<input>` element to the `CurrentValue` property:
@@ -129,7 +127,7 @@ Specifying a format for the `date` field type isn't recommended because Blazor h
 
 A common scenario is binding a property in a child component to a property in its parent. This scenario is called a *chained bind* because multiple levels of binding occur simultaneously.
 
-[Component parameters](xref:blazor/components/index#component-parameters) permit binding properties and fields of a parent component with `@bind-{PROPERTY OR FIELD}` syntax.
+[Component parameters](xref:blazor/components/index#component-parameters) permit binding properties of a parent component with `@bind-{PROPERTY}` syntax.
 
 Chained binds can't be implemented with [`@bind`](xref:mvc/views/razor#bind) syntax in the child component. An event handler and value must be specified separately to support updating the property in the parent from the child component.
 
@@ -409,7 +407,7 @@ The following components demonstrate the preceding concepts:
 }
 ```
 
-For an alternative approach suited to sharing data in-memory across components that aren't necessarily nested, see <xref:blazor/state-management#in-memory-state-container-service>.
+For an alternative approach suited to sharing data in-memory across components that aren't necessarily nested, see the *In-memory state container service* section of the <xref:blazor/state-management> article.
 
 ## Additional resources
 

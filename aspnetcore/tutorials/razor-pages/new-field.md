@@ -3,9 +3,9 @@ title: Part 7, add a new field
 author: rick-anderson
 description: Part 7 of tutorial series on Razor Pages.
 ms.author: riande
-ms.custom: mvc
+ms.custom: mvc, contperf-fy21q2
 ms.date: 09/28/2020
-no-loc: [Index, Create, Delete, appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
+no-loc: [Index, appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: tutorials/razor-pages/new-field
 ---
 # Part 7, add a new field to a Razor Page in ASP.NET Core
@@ -23,7 +23,7 @@ In this section [Entity Framework](/ef/core/get-started/aspnetcore/new-db) Code 
 
 When using EF Code First to automatically create a database, Code First:
 
-* Adds an [`__EFMigrationsHistory`](https://docs.microsoft.com/ef/core/managing-schemas/migrations/history-table) table to the database to track whether the schema of the database is in sync with the model classes it was generated from.
+* Adds an [`__EFMigrationsHistory`](/ef/core/managing-schemas/migrations/history-table) table to the database to track whether the schema of the database is in sync with the model classes it was generated from.
 * If the model classes aren't in sync with the database, EF throws an exception.
 
 Automatic verification that the schema and model are in sync makes it easier to find inconsistent database code issues.
@@ -164,7 +164,7 @@ In this section [Entity Framework](/ef/core/get-started/aspnetcore/new-db) Code 
 
 When using EF Code First to automatically create a database, Code First:
 
-* Adds an [`__EFMigrationsHistory`](https://docs.microsoft.com/ef/core/managing-schemas/migrations/history-table) table to the database to track whether the schema of the database is in sync with the model classes it was generated from.
+* Adds an [`__EFMigrationsHistory`](/ef/core/managing-schemas/migrations/history-table) table to the database to track whether the schema of the database is in sync with the model classes it was generated from.
 * If the model classes aren't in sync with the database, EF throws an exception.
 
 Automatic verification that the schema and model are in sync makes it easier to find inconsistent database code issues.
@@ -305,7 +305,7 @@ In this section [Entity Framework](/ef/core/get-started/aspnetcore/new-db) Code 
 
 When using EF Code First to automatically create a database, Code First:
 
-* Adds an [`__EFMigrationsHistory`](https://docs.microsoft.com/ef/core/managing-schemas/migrations/history-table) table to the database to track whether the schema of the database is in sync with the model classes it was generated from.
+* Adds an [`__EFMigrationsHistory`](/ef/core/managing-schemas/migrations/history-table) table to the database to track whether the schema of the database is in sync with the model classes it was generated from.
 * If the model classes aren't in sync with the database, EF throws an exception.
 
 Automatic verification that the schema and model are in sync makes it easier to find inconsistent database code issues.
@@ -377,7 +377,7 @@ The `Update-Database` command tells the framework to apply the schema changes to
 
 <a name="ssox"></a>
 
-If you delete all the records in the DdatabaseB, the initializer will seed the DdatabaseB and include the `Rating` field. You can do this with the delete links in the browser or from [Sql Server Object Explorer](xref:tutorials/razor-pages/sql#ssox) (SSOX).
+If you delete all the records in the database, the initializer will seed the database and include the `Rating` field. You can do this with the delete links in the browser or from [Sql Server Object Explorer](xref:tutorials/razor-pages/sql#ssox) (SSOX).
 
 Another option is to delete the database and use migrations to re-create the database. To delete the database in SSOX:
 

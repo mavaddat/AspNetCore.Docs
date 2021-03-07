@@ -11,8 +11,6 @@ uid: blazor/index
 ---
 # Introduction to ASP.NET Core Blazor
 
-By [Daniel Roth](https://github.com/danroth27) and [Luke Latham](https://github.com/guardrex)
-
 *Welcome to Blazor!*
 
 Blazor is a framework for building interactive client-side web UI with [.NET](/dotnet/standard/tour):
@@ -109,7 +107,7 @@ When a Blazor WebAssembly app is built and run in a browser:
 * The assemblies and the [.NET runtime](/dotnet/framework/get-started/overview) are downloaded to the browser.
 * Blazor WebAssembly bootstraps the .NET runtime and configures the runtime to load the assemblies for the app. The Blazor WebAssembly runtime uses JavaScript interop to handle DOM manipulation and browser API calls.
 
-The size of the published app, its *payload size*, is a critical performance factor for an app's useability. A large app takes a relatively long time to download to a browser, which diminishes the user experience. Blazor WebAssembly optimizes payload size to reduce download times:
+The size of the published app, its *payload size*, is a critical performance factor for an app's usability. A large app takes a relatively long time to download to a browser, which diminishes the user experience. Blazor WebAssembly optimizes payload size to reduce download times:
 
 ::: moniker range=">= aspnetcore-5.0"
 
@@ -131,8 +129,9 @@ The size of the published app, its *payload size*, is a critical performance fac
 
 Blazor decouples component rendering logic from how UI updates are applied. *Blazor Server* provides support for hosting Razor components on the server in an ASP.NET Core app. UI updates are handled over a [SignalR](xref:signalr/introduction) connection.
 
-The runtime handles:
+The runtime stays on the server and handles:
 
+* Executing the app's C# code.
 * Sending UI events from the browser to the server.
 * Applying UI updates to the rendered component that are sent back by the server.
 
@@ -154,10 +153,10 @@ APIs that aren't applicable inside of a web browser (for example, accessing the 
 
 * [WebAssembly](https://webassembly.org)
 * <xref:blazor/hosting-models>
-* <xref:tutorials/signalr-blazor-webassembly>
+* <xref:tutorials/signalr-blazor>
 * <xref:blazor/call-javascript-from-dotnet>
 * <xref:blazor/call-dotnet-from-javascript>
 * [C# Guide](/dotnet/csharp/)
-* <xref:mvc/views/razor>
+* [Razor syntax reference for ASP.NET Core](xref:mvc/views/razor)
 * [HTML](https://www.w3.org/html/)
 * [Awesome Blazor](https://github.com/AdrienTorris/awesome-blazor) community links
